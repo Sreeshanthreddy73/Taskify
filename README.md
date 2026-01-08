@@ -47,30 +47,42 @@ graph TD
 
 ## 🛠️ Quick Start
 
-### 1. Clone the Repository
+### Option 1: Docker (Recommended)
 
-```bash
-git clone https://github.com/Sreeshanthreddy73/Taskify.git
-cd Taskify
-```
+1.  **Clone the Repository**
+    ```bash
+    git clone https://github.com/Sreeshanthreddy73/Taskify.git
+    cd Taskify
+    ```
 
-### 2. Start the Application
+2.  **Start Application**
+    ```bash
+    docker compose up --build
+    ```
 
-```bash
-docker compose up -d
-```
+3.  **Access Dashboard**
+    Open your browser and go to:
+    👉 **[http://localhost:8000](http://localhost:8000)**
 
-### 3. Access the Dashboard
+### Option 2: Local Setup (Python)
 
-Open your browser and go to:
-```
-http://localhost/direct-dashboard.html
-```
+1.  **Install Dependencies**
+    ```bash
+    cd backend
+    pip install -r requirements.txt
+    ```
 
-Or login manually at:
-```
-http://localhost/login.html
-```
+2.  **Initialize Database**
+    ```bash
+    python init_db.py
+    ```
+
+3.  **Run Server**
+    ```bash
+    python -m uvicorn main:app --reload --host 127.0.0.1 --port 8000
+    ```
+4.  **Access Dashboard**
+    Go to **[http://localhost:8000](http://localhost:8000)**
 
 ## 👥 Demo Accounts
 

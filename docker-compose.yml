@@ -12,7 +12,8 @@ services:
       - PYTHONUNBUFFERED=1
     volumes:
       - ./backend:/app
-      - backend-data:/app/data # Persist database
+      - ./frontend:/frontend # Mount frontend for backend serving
+      - backend-data:/app/data
     networks:
       - logitech-network
     healthcheck:
@@ -22,23 +23,9 @@ services:
       retries: 3
       start_period: 40s
 
-  frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-    container_name: logitech-frontend
-    ports:
-      - "80:80"
-    volumes:
-      - ./frontend:/usr/share/nginx/html
-    depends_on:
-      - backend
-    networks:
-      - logitech-network
-
 networks:
   logitech-network:
     driver: bridge
 
 volumes:
-  backend-data: # Named volume for database persistence
+  backend-data:
