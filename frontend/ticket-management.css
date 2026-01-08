@@ -11,6 +11,8 @@
     background: var(--color-bg-tertiary);
     border-radius: var(--radius-lg);
     border: 1px solid var(--glass-border);
+    visibility: visible;
+    opacity: 1;
 }
 
 .filter-group {

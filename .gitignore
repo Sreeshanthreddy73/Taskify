@@ -53,3 +53,5 @@ htmlcov/
 # Artifacts and brain files (Gemini specific)
 .gemini/
 brain/
+
+SupplyChainSentinel_Submission.zip

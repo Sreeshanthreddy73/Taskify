@@ -4,205 +4,304 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description"
-        content="AI-assisted supply chain disruption response system for coordinated logistics decision-making">
-    <meta name="keywords" content="supply chain, logistics, disruption response, AI assistant, LogiTech">
-    <title>LogiTech - Disruption Response System</title>
-
-    <!-- Google Fonts -->
+    <title>SupplyChain Sentinel | Intelligent Logistics</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="ticket-management.css">
-    <link rel="stylesheet" href="notification-system.css">
+    <style>
+        /* Landing Page Specific Styles */
+        body {
+            background-color: var(--color-bg-dark);
+            background-image:
+                radial-gradient(circle at 10% 20%, rgba(139, 92, 246, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(59, 130, 246, 0.15) 0%, transparent 40%);
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .landing-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 2rem 4rem;
+            width: 100%;
+            z-index: 10;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--color-accent-primary), var(--color-accent-secondary));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
+        }
+
+        .logo-text {
+            font-size: 1.75rem;
+            font-weight: 700;
+            background: linear-gradient(to right, #fff, #94a3b8);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
+        }
+
+        .hero-quote {
+            font-size: 4rem;
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(180deg, #ffffff 0%, #94a3b8 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .auth-nav {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .nav-link {
+            padding: 0.75rem 2rem;
+            border-radius: 12px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .nav-link.login {
+            color: var(--color-text-primary);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-link.login:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .nav-link.signup {
+            background: linear-gradient(135deg, var(--color-accent-primary), var(--color-accent-secondary));
+            color: white;
+            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+        }
+
+        .nav-link.signup:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(139, 92, 246, 0.4);
+        }
+
+        .hero-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            padding: 0 2rem;
+        }
+
+        .hero-quote-container {
+            max-width: 900px;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .hero-quote-container::before {
+            content: '"';
+            font-family: serif;
+            font-size: 12rem;
+            position: absolute;
+            top: -6rem;
+            left: -4rem;
+            color: rgba(255, 255, 255, 0.03);
+            z-index: -1;
+        }
+
+        .hero-quote {
+            font-size: 4rem;
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(180deg, #ffffff 0%, #94a3b8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .hero-subtext {
+            font-size: 1.5rem;
+            color: var(--color-text-secondary);
+            font-weight: 300;
+            max-width: 600px;
+            margin: 0 auto;
+            animation: fadeInUp 1s ease-out 0.2s backwards;
+        }
+
+        .grid-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: 0;
+            mask-image: radial-gradient(circle at center, black 40%, transparent 80%);
+        }
+
+        .floating-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            z-index: -1;
+            animation: float 20s infinite ease-in-out;
+        }
+
+        .orb-1 {
+            width: 400px;
+            height: 400px;
+            background: rgba(139, 92, 246, 0.1);
+            top: 20%;
+            left: 20%;
+            animation-delay: 0s;
+        }
+
+        .orb-2 {
+            width: 300px;
+            height: 300px;
+            background: rgba(59, 130, 246, 0.1);
+            bottom: 20%;
+            right: 20%;
+            animation-delay: -5s;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translate(0, 0);
+            }
+
+            25% {
+                transform: translate(20px, 20px);
+            }
+
+            50% {
+                transform: translate(-20px, 40px);
+            }
+
+            75% {
+                transform: translate(-40px, -20px);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-quote {
+                font-size: 2.5rem;
+            }
+
+            .landing-header {
+                padding: 1.5rem;
+            }
+
+            .nav-link {
+                padding: 0.5rem 1rem;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
 </head>
 
 <body>
-    <!-- Header -->
-    <header class="header">
-        <div class="container">
-            <div class="header-content">
-                <div class="logo">
-                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-                        <rect width="32" height="32" rx="8" fill="url(#gradient1)" />
-                        <path d="M16 8L24 12V20L16 24L8 20V12L16 8Z" stroke="white" stroke-width="2"
-                            stroke-linejoin="round" />
-                        <circle cx="16" cy="16" r="3" fill="white" />
-                        <defs>
-                            <linearGradient id="gradient1" x1="0" y1="0" x2="32" y2="32">
-                                <stop offset="0%" stop-color="#6366f1" />
-                                <stop offset="100%" stop-color="#8b5cf6" />
-                            </linearGradient>
-                        </defs>
-                    </svg>
-                    <h1>LogiTech</h1>
-                </div>
-                <nav class="nav">
-                    <a href="#disruptions" class="nav-link active">Disruptions</a>
-                    <a href="#tickets" class="nav-link">Action Tickets</a>
+    <div class="grid-overlay"></div>
+    <div class="floating-orb orb-1"></div>
+    <div class="floating-orb orb-2"></div>
 
-                    <!-- Notification System -->
-                    <div class="notification-wrapper">
-                        <div class="notification-bell" id="notificationBell">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0"
-                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round" />
-                            </svg>
-                            <span class="notification-badge" id="notificationBadge" style="display: none;">0</span>
-                        </div>
-
-                        <!-- Notification Panel -->
-                        <div class="notification-panel" id="notificationPanel">
-                            <div class="notification-header">
-                                <h3>Notifications</h3>
-                                <button class="notification-settings" id="toggleSound" title="Toggle sound">
-                                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                                        <path d="M11 5L6 9H2v6h4l5 4V5z" stroke="currentColor" stroke-width="2" />
-                                        <path d="M15.54 8.46a5 5 0 0 1 0 7.07" stroke="currentColor" stroke-width="2" />
-                                    </svg>
-                                </button>
-                            </div>
-                            <div class="notification-list" id="notificationList">
-                                <div class="empty-notifications">No notifications yet</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="status-indicator">
-                        <span class="status-dot"></span>
-                        <span>System Online</span>
-                    </div>
-                </nav>
+    <header class="landing-header">
+        <div class="logo-container">
+            <div class="logo-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="white" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                    <path d="M2 17L12 22L22 17" stroke="white" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                    <path d="M2 12L12 17L22 12" stroke="white" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg>
             </div>
+            <span class="logo-text">SupplyChain Sentinel</span>
         </div>
+
+        <nav class="auth-nav">
+            <a href="login.html" class="nav-link login">Log In</a>
+            <a href="signup.html" class="nav-link signup">Sign Up</a>
+        </nav>
     </header>
 
-    <!-- Main Content -->
-    <main class="main">
-        <div class="container">
-            <div class="grid">
-                <!-- Left Column: Disruptions Feed -->
-                <section class="section disruptions-section">
-                    <div class="section-header">
-                        <h2>Active Disruptions</h2>
-                        <div class="filter-controls">
-                            <select id="severityFilter" class="filter-select">
-                                <option value="all">All Severities</option>
-                                <option value="critical">Critical</option>
-                                <option value="high">High</option>
-                                <option value="medium">Medium</option>
-                                <option value="low">Low</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div id="disruptionsList" class="disruptions-list">
-                        <!-- Disruptions will be loaded here -->
-                        <div class="loading">
-                            <div class="spinner"></div>
-                            <p>Loading disruptions...</p>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Middle Column: AI Chat Interface -->
-                <section class="section chat-section">
-                    <div class="section-header">
-                        <h2>AI Assistant</h2>
-                        <div class="chat-status">
-                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="2" />
-                                <path d="M5 8L7 10L11 6" stroke="currentColor" stroke-width="2"
-                                    stroke-linecap="round" />
-                            </svg>
-                            <span>Ready</span>
-                        </div>
-                    </div>
-
-                    <div id="chatMessages" class="chat-messages">
-                        <div class="chat-message assistant">
-                            <div class="message-avatar">AI</div>
-                            <div class="message-content">
-                                <p>👋 Welcome to the LogiTech Disruption Response System!</p>
-                                <p>Select a disruption from the left panel to analyze its impact and coordinate response
-                                    actions.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="chat-input-container">
-                        <input type="text" id="chatInput" class="chat-input"
-                            placeholder="Type your response or select a disruption..." disabled>
-                        <button id="sendButton" class="send-button" disabled>
-                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                                <path d="M18 2L9 11M18 2L12 18L9 11M18 2L2 8L9 11" stroke="currentColor"
-                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                            </svg>
-                        </button>
-                    </div>
-                </section>
-
-                <!-- Right Column: Action Tickets -->
-                <section class="section actions-section">
-                    <div class="section-header">
-                        <h2>Action Tickets</h2>
-                        <span id="ticketCount" class="badge">0</span>
-                    </div>
-
-                    <!-- Ticket Filters -->
-                    <div class="ticket-filters">
-                        <div class="filter-group">
-                            <label class="filter-label">Action Type</label>
-                            <select class="filter-select" onchange="updateFilter('action', this.value)">
-                                <option value="all">All</option>
-                                <option value="reroute">Reroute</option>
-                                <option value="delay">Delay</option>
-                                <option value="escalate">Escalate</option>
-                            </select>
-                        </div>
-                        <div class="filter-group">
-                            <label class="filter-label">Status</label>
-                            <select class="filter-select" onchange="updateFilter('status', this.value)">
-                                <option value="all">All</option>
-                                <option value="pending">Pending</option>
-                                <option value="approved">Approved</option>
-                                <option value="in_progress">In Progress</option>
-                                <option value="completed">Completed</option>
-                                <option value="rejected">Rejected</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div id="ticketsContainer" class="tickets-list">
-                        <div class="empty-state">
-                            <p>No action tickets yet</p>
-                            <span class="empty-hint">Process a disruption to generate action tickets</span>
-                        </div>
-                    </div>
-                </section>
-            </div>
+    <main class="hero-section">
+        <div class="hero-quote-container">
+            <h1 class="hero-quote">
+                "Navigating Chaos,<br>Delivering Certainty."
+            </h1>
+            <p class="hero-subtext">
+                AI-driven resilience for the modern supply chain.
+                Predict disruptions before they happen.
+            </p>
         </div>
     </main>
 
-    <!-- Impact Modal -->
-    <div id="impactModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>Impact Analysis</h3>
-                <button class="modal-close" onclick="closeModal()">&times;</button>
-            </div>
-            <div id="impactContent" class="modal-body">
-                <!-- Impact analysis will be shown here -->
-            </div>
-        </div>
-    </div>
+    <script>
+        // Check if user is already logged in
+        document.addEventListener('DOMContentLoaded', () => {
+            const sessionToken = sessionStorage.getItem('session_token');
+            if (sessionToken) {
+                // Change login button to "Go to Dashboard"
+                const loginBtn = document.querySelector('.nav-link.login');
+                loginBtn.textContent = 'Dashboard';
+                loginBtn.href = 'direct-dashboard.html';
 
-    <script src="ticket-management.js?v=1.1"></script>
-    <script src="notification-system.js?v=1.1"></script>
-    <script src="app.js?v=1.1"></script>
+                // Hide signup
+                const signupBtn = document.querySelector('.nav-link.signup');
+                signupBtn.style.display = 'none';
+            }
+        });
+    </script>
 </body>
 
 </html>

@@ -4,7 +4,7 @@ Manages action tickets for disruption responses.
 """
 from typing import List, Optional
 from datetime import datetime
-from models import ActionTicket, Decision, ActionType
+from models import ActionTicket, Decision, ActionType, TicketStatus
 from services.data_service import get_shipment_by_id, get_route_by_id
 from sqlalchemy.orm import Session
 from db_models import ActionTicketDB
@@ -62,17 +62,29 @@ def create_action_ticket(
 
 
 def ticket_db_to_model(ticket_db: ActionTicketDB) -> ActionTicket:
-    """Convert database model to Pydantic model"""
+    """Convert DB model to Pydantic model"""
+    # Reconstruct incomplete decision object from what we have
+    # Note: DB doesn't store all decision details like cost impact or confidence score
+    decision = Decision(
+        shipment_id=ticket_db.shipment_id,
+        action=ActionType(ticket_db.action_type),
+        reasoning="Reconstructed from ticket explanation", # We don't store raw reasoning separate from explanation
+        estimated_delay_hours=int(ticket_db.estimated_delay.split()[0]) if ticket_db.estimated_delay and ticket_db.estimated_delay[0].isdigit() else None,
+        estimated_cost_impact=0.0, # Not stored in DB
+        confidence_score=1.0, # Not stored in DB
+        alternative_route_id=None # Not stored in DB
+    )
+    
     return ActionTicket(
         id=ticket_db.id,
         disruption_id=ticket_db.disruption_id,
         shipment_id=ticket_db.shipment_id,
-        destination=ticket_db.destination,
         action=ActionType(ticket_db.action_type),
         explanation=ticket_db.explanation,
+        destination=ticket_db.destination or "Unknown",
+        status=TicketStatus(ticket_db.status),
         created_at=ticket_db.created_at,
-        status=ticket_db.status,
-        decision=None  # Decision object not stored in DB, only the result
+        decision=decision
     )
 
 

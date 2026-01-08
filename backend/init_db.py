@@ -137,16 +137,16 @@ def init_database():
     
     # Create all tables
     Base.metadata.create_all(bind=engine)
-    print("✓ Database tables created")
+    print("[OK] Database tables created")
     
     # Seed data
     db = SessionLocal()
     try:
         seed_operators(db)
         seed_disruptions(db)
-        print("✓ Database initialization complete!")
+        print("[OK] Database initialization complete!")
     except Exception as e:
-        print(f"✗ Error seeding data: {e}")
+        print(f"[ERROR] Error seeding data: {e}")
         db.rollback()
     finally:
         db.close()

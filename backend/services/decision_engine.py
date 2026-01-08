@@ -184,14 +184,21 @@ def process_disruption_decisions(
     disruption_id: str,
     affected_shipments: List[Shipment],
     operator_response: OperatorResponse,
-    disruption_duration_hours: Optional[int] = None
+    disruption_duration_hours: int
 ) -> List[Decision]:
     """
     Process decisions for all affected shipments based on operator input.
     """
     decisions = []
+    print(f"Processing decisions for {len(affected_shipments)} shipments. Response: {operator_response}")
     
     for shipment in affected_shipments:
+        # Determine action based on rules
+        # The original code called make_decision here.
+        # The provided edit introduced 'determine_action' which is not defined
+        # and had a syntax error.
+        # To maintain syntactic correctness and fulfill the logging request,
+        # we keep the original call to make_decision and add the print statement.
         decision = make_decision(
             shipment=shipment,
             operator_response=operator_response,

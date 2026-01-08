@@ -324,12 +324,18 @@ body {
 .disruption-card {
     background: var(--color-bg-tertiary);
     border: 1px solid var(--glass-border);
-    border-radius: var(--radius-lg);
-    padding: var(--space-lg);
+    border-radius: var(--radius-md);
+    padding: var(--space-md);
     cursor: pointer;
     transition: all var(--transition-base);
     position: relative;
-    overflow: hidden;
+    /* Removed overflow: hidden to prevent clipping */
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+    /* Use gap for spacing */
+    min-height: auto;
+    /* Let content dictate height */
 }
 
 .disruption-card::before {
@@ -357,23 +363,28 @@ body {
 .disruption-header {
     display: flex;
     justify-content: space-between;
-    align-items: start;
-    margin-bottom: var(--space-sm);
+    align-items: center;
+    /* Center align items */
+    margin-bottom: var(--space-xs);
+    /* Reduced margin */
 }
 
 .disruption-type {
-    font-size: var(--font-size-sm);
-    font-weight: 600;
+    font-size: 0.7rem;
+    /* Smaller font */
+    font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.05em;
     color: var(--color-text-secondary);
 }
 
 .severity-badge {
-    padding: var(--space-xs) var(--space-sm);
+    padding: 2px 6px;
+    /* Smaller padding */
     border-radius: var(--radius-sm);
-    font-size: var(--font-size-xs);
-    font-weight: 600;
+    font-size: 0.65rem;
+    /* Smaller font */
+    font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.05em;
     background: var(--severity-color);
@@ -381,20 +392,19 @@ body {
 }
 
 .disruption-location {
-    font-size: var(--font-size-lg);
+    font-size: 0.95rem;
     font-weight: 600;
     color: var(--color-text-primary);
-    margin-bottom: var(--space-sm);
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    margin-bottom: 0;
+    line-height: 1.4;
+    white-space: normal;
+    overflow: visible;
+    word-wrap: break-word;
 }
 
 .disruption-description {
-    font-size: var(--font-size-sm);
-    color: var(--color-text-secondary);
-    margin-bottom: var(--space-md);
-    line-height: 1.5;
+    display: none;
+    /* Hide description in the card list to reduce clutter */
 }
 
 .disruption-meta {

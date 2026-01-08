@@ -1,6 +1,34 @@
-# LogiTech - Supply Chain Disruption Response System
+# SupplyChain Sentinel - Disruption Response System
 
-AI-assisted, agent-driven disruption response system for logistics companies.
+**SupplyChain Sentinel** is an AI-powered logistics platform that detects supply chain disruptions (port strikes, weather, closures) and automatically generates actionable response tickets. It uses a deterministic decision engine enhanced by GenAI for natural language interaction.
+
+## 🏗️ Architecture
+
+```mermaid
+graph TD
+    User[Logistics Operator] -->|HTTP/Websocket| Frontend[Frontend (HTML/JS)]
+    Frontend -->|API REST| Backend[FastAPI Backend]
+    
+    subgraph Backend Services
+        Auth[Auth Service (bcrypt)]
+        Impact[Impact Service (Geo-Matching)]
+        Decision[Decision Engine (Deterministic)]
+        AI[AI Service (Google Gemini)]
+    end
+    
+    Backend --> Auth
+    Backend --> Impact
+    Backend --> Decision
+    Backend --> AI
+    
+    subgraph Data Layer
+        DB[(SQLite Database)]
+    end
+    
+    Auth --> DB
+    Impact --> DB
+    Decision --> DB
+```
 
 ## 🚀 Features
 

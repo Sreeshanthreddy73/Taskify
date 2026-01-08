@@ -28,6 +28,7 @@ app.add_middleware(
 )
 
 
+
 @app.on_event("startup")
 async def startup_event():
     """Initialize database on application startup"""
@@ -136,15 +137,6 @@ async def get_operators(db: Session = Depends(get_db)):
 # DISRUPTION ENDPOINTS
 # ============================================================================
 
-@app.get("/")
-async def root():
-    """Health check endpoint"""
-    return {
-        "status": "online",
-        "service": "Supply Chain Disruption Response System",
-        "version": "1.0.0",
-        "timestamp": datetime.now().isoformat()
-    }
 
 
 @app.get("/api/disruptions", response_model=List[Disruption])
@@ -283,23 +275,26 @@ async def create_tickets(disruption_id: str, operator_response: OperatorResponse
                 operator_id = operator.id
         
         # Get impact analysis
-        impact = impact_service.analyze_disruption_impact(disruption_id)
-        
         # Get disruption details
         disruption = disruption_service.get_disruption(disruption_id, db)
         if not disruption:
-            raise HTTPException(status_code=404, detail=f"Disruption {disruption_id} not found")
+            raise HTTPException(status_code=404, detail="Disruption not found")
         
-        # Process decisions (using mock disruption duration since it's not in DB model)
+        # Get impact analysis with db session
+        impact = impact_service.analyze_disruption_impact(disruption_id, db)
+        print(f"Impact Analysis: {len(impact.affected_shipments)} shipments affected")
+        
+        # Process decisions
         decisions = decision_engine.process_disruption_decisions(
             disruption_id=disruption_id,
             affected_shipments=impact.affected_shipments,
             operator_response=operator_response,
-            disruption_duration_hours=72  # Default duration
+            disruption_duration_hours=disruption.estimated_duration_hours if disruption.estimated_duration_hours else 72 # Use actual duration or default
         )
+        print(f"Decision Engine: Generated {len(decisions)} decisions")
         
-        # Create action tickets
-        tickets = []
+        # Create tickets in database
+        created_tickets = []
         for decision in decisions:
             ticket = action_service.create_action_ticket(
                 disruption_id=disruption_id,
@@ -307,12 +302,18 @@ async def create_tickets(disruption_id: str, operator_response: OperatorResponse
                 operator_id=operator_id,
                 db=db
             )
-            tickets.append(ticket)
+            if ticket:
+                created_tickets.append(ticket)
         
-        return tickets
-    except HTTPException:
-        raise
+        print(f"Created {len(created_tickets)} tickets for disruption {disruption_id}")
+        return created_tickets
+        
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))
     except Exception as e:
+        print(f"Error creating tickets: {str(e)}")
+        import traceback
+        traceback.print_exc()
         raise HTTPException(status_code=500, detail=str(e))
 
 
@@ -350,22 +351,63 @@ async def get_tickets_by_disruption(disruption_id: str, db: Session = Depends(ge
 
 @app.patch("/api/tickets/{ticket_id}/status")
 async def update_ticket(ticket_id: str, update: dict, db: Session = Depends(get_db)):
-    """Update ticket status"""
+    """Update ticket status (generic)"""
     try:
         status = update.get("status")
-        
-        ticket = action_service.update_ticket_status(
-            ticket_id=ticket_id,
-            status=status,
-            db=db
-        )
-        
+        ticket = action_service.update_ticket_status(ticket_id, status, db)
         if not ticket:
             raise HTTPException(status_code=404, detail=f"Ticket {ticket_id} not found")
-        
         return ticket
     except HTTPException:
         raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/api/tickets/{ticket_id}/approve")
+async def approve_ticket(ticket_id: str, request: dict, db: Session = Depends(get_db)):
+    """Approve a ticket"""
+    try:
+        ticket = action_service.update_ticket_status(ticket_id, "approved", db)
+        if not ticket:
+            raise HTTPException(status_code=404, detail=f"Ticket {ticket_id} not found")
+        return ticket
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/api/tickets/{ticket_id}/reject")
+async def reject_ticket(ticket_id: str, request: dict, db: Session = Depends(get_db)):
+    """Reject a ticket"""
+    try:
+        ticket = action_service.update_ticket_status(ticket_id, "rejected", db)
+        if not ticket:
+            raise HTTPException(status_code=404, detail=f"Ticket {ticket_id} not found")
+        return ticket
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/api/tickets/{ticket_id}/start")
+async def start_ticket(ticket_id: str, request: dict, db: Session = Depends(get_db)):
+    """Start working on a ticket"""
+    try:
+        ticket = action_service.update_ticket_status(ticket_id, "in_progress", db)
+        if not ticket:
+            raise HTTPException(status_code=404, detail=f"Ticket {ticket_id} not found")
+        return ticket
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/api/tickets/{ticket_id}/complete")
+async def complete_ticket(ticket_id: str, request: dict, db: Session = Depends(get_db)):
+    """Complete a ticket"""
+    try:
+        ticket = action_service.update_ticket_status(ticket_id, "completed", db)
+        if not ticket:
+            raise HTTPException(status_code=404, detail=f"Ticket {ticket_id} not found")
+        return ticket
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
@@ -443,39 +485,46 @@ async def add_ticket_note(ticket_id: str, data: dict, db: Session = Depends(get_
 # ============================================================================
 
 @app.post("/api/summary/{disruption_id}")
-async def get_decision_summary(disruption_id: str, operator_response: OperatorResponse):
+async def get_decision_summary(disruption_id: str, operator_response: OperatorResponse, db: Session = Depends(get_db)):
     """Get AI-generated summary of all decisions"""
     try:
-        # Get impact analysis
-        impact = impact_service.analyze_disruption_impact(disruption_id)
-        
         # Get disruption details
-        disruption = disruption_service.get_disruption_by_id(disruption_id)
+        disruption = disruption_service.get_disruption(disruption_id, db)
+        if not disruption:
+            raise HTTPException(status_code=404, detail="Disruption not found")
+        
+        # Get impact analysis
+        impact = impact_service.analyze_disruption_impact(disruption_id, db)
         
         # Process decisions
         decisions = decision_engine.process_disruption_decisions(
             disruption_id=disruption_id,
             affected_shipments=impact.affected_shipments,
             operator_response=operator_response,
-            disruption_duration_hours=disruption.estimated_duration_hours
+            disruption_duration_hours=72  # Default duration
         )
         
         # Generate summary
         summary = ai_service.generate_decision_summary(decisions, operator_response)
         
-        message = ai_service.create_conversation_message(
-            role="assistant",
-            content=summary
-        )
-        
-        return {
-            "message": message,
-            "decisions": decisions
-        }
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e))
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+
+
+# Serve Frontend Static Files (Catch-all)
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
+import os
+
+frontend_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), "frontend")
+if os.path.exists(frontend_dir):
+    # Mount /static for explicit asset loading if needed
+    app.mount("/static", StaticFiles(directory=frontend_dir), name="static")
+    # Mount root to serve frontend (SPA style) - MUST BE LAST
+    app.mount("/", StaticFiles(directory=frontend_dir, html=True), name="frontend")
 
 
 if __name__ == "__main__":

@@ -9,15 +9,15 @@ shipments_db: Dict[str, Shipment] = {}
 def get_mock_routes() -> List[Route]:
     """Generate mock route data"""
     mock_routes = [
-        Route(id="ROUTE-001", name="Chennai to Singapore", origin="Chennai", destination="Singapore", via_points=["Colombo"], estimated_days=7),
-        Route(id="ROUTE-002", name="Chennai to Dubai", origin="Chennai", destination="Dubai", via_points=["Mumbai"], estimated_days=10),
-        Route(id="ROUTE-003", name="Singapore to Los Angeles", origin="Singapore", destination="Los Angeles", via_points=["Tokyo"], estimated_days=18),
-        Route(id="ROUTE-004", name="Rotterdam to Mumbai", origin="Rotterdam", destination="Mumbai", via_points=["Suez Canal", "Jeddah"], estimated_days=21),
-        Route(id="ROUTE-005", name="Chennai to Hong Kong", origin="Chennai", destination="Hong Kong", via_points=["Singapore"], estimated_days=12),
-        Route(id="ROUTE-006", name="Shanghai to San Francisco", origin="Shanghai", destination="San Francisco", via_points=[], estimated_days=16),
+        Route(id="ROUTE-001", name="Chennai to Singapore", origin="Chennai", destination="Singapore", via_points=["Colombo", "Indian Ocean"], estimated_days=7),
+        Route(id="ROUTE-002", name="Chennai to Dubai", origin="Chennai", destination="Dubai", via_points=["Mumbai", "Arabian Sea"], estimated_days=10),
+        Route(id="ROUTE-003", name="Singapore to Los Angeles", origin="Singapore", destination="Los Angeles", via_points=["Tokyo", "Pacific Ocean"], estimated_days=18),
+        Route(id="ROUTE-004", name="Rotterdam to Mumbai", origin="Rotterdam", destination="Mumbai", via_points=["Suez Canal", "Jeddah", "Red Sea"], estimated_days=21),
+        Route(id="ROUTE-005", name="Chennai to Hong Kong", origin="Chennai", destination="Hong Kong", via_points=["Singapore", "Bay of Bengal"], estimated_days=12),
+        Route(id="ROUTE-006", name="Shanghai to San Francisco", origin="Shanghai", destination="San Francisco", via_points=["Pacific Ocean"], estimated_days=16),
         Route(id="ROUTE-007", name="Hamburg to Singapore", origin="Hamburg", destination="Singapore", via_points=["Suez Canal", "Colombo"], estimated_days=24),
         Route(id="ROUTE-008", name="London to Chennai", origin="London", destination="Chennai", via_points=["Suez Canal"], estimated_days=20),
-        Route(id="ROUTE-009", name="Rotterdam to New York", origin="Rotterdam", destination="New York", via_points=[], estimated_days=8),
+        Route(id="ROUTE-009", name="Rotterdam to New York", origin="Rotterdam", destination="New York", via_points=["Atlantic Ocean"], estimated_days=8),
         Route(id="ROUTE-010", name="Rotterdam to Shanghai", origin="Rotterdam", destination="Shanghai", via_points=["Suez Canal", "Singapore"], estimated_days=28),
     ]
     

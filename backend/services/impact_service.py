@@ -34,8 +34,20 @@ def analyze_disruption_impact(disruption_id: str, db=None) -> ImpactAnalysis:
         affected_routes: List[Route] = []
         # Note: disruption from DB doesn't have affected_routes field
         # For now, we'll use mock logic based on location
+        # Check if route locations are mentioned in disruption location
+        # e.g. "Chennai" in "Chennai Port, India"
         for route in all_routes:
-            if disruption.location in route.name or disruption.location in route.origin or disruption.location in route.destination:
+            # Check if matching via points
+            via_match = any(point in disruption.location for point in route.via_points)
+            
+            # Simple keyword matching for ocean regions if not explicit
+            if "Pacific" in disruption.location and "Pacific Ocean" in route.via_points:
+                via_match = True
+                
+            if (route.origin in disruption.location or 
+                route.destination in disruption.location or 
+                disruption.location in route.name or
+                via_match):
                 affected_routes.append(route)
         
         # Find affected shipments (shipments on affected routes)
