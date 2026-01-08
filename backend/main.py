@@ -515,8 +515,9 @@ async def get_decision_summary(disruption_id: str, operator_response: OperatorRe
 
 
 # Serve Frontend Static Files (Catch-all)
+# Serve Frontend Static Files (Catch-all)
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, JSONResponse
 import os
 
 # Robust Directory Resolution
@@ -561,10 +562,17 @@ print(f"DEBUG: Exists? {os.path.exists(frontend_dir)}")
 # Explicit root route for index.html (ALWAYS REGISTERED)
 @app.get("/")
 async def read_root():
-    if not os.path.exists(frontend_dir):
-         print("ERROR: Frontend directory not found!")
-         raise HTTPException(status_code=500, detail="Frontend directory not found")
-    return FileResponse(os.path.join(frontend_dir, "index.html"))
+    try:
+        if not os.path.exists(frontend_dir):
+             return JSONResponse(status_code=500, content={"error": "Frontend dir not found", "path": frontend_dir})
+        
+        index_path = os.path.join(frontend_dir, "index.html")
+        if not os.path.exists(index_path):
+             return JSONResponse(status_code=500, content={"error": "index.html not found", "path": index_path})
+             
+        return FileResponse(index_path)
+    except Exception as e:
+        return JSONResponse(status_code=500, content={"error": "Internal Server Error", "detail": str(e)})
 
 if os.path.exists(frontend_dir):
     # Mount /static for explicit asset loading if needed
