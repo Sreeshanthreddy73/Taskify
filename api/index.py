@@ -1,19 +1,11 @@
-"""
-Minimal FastAPI test for Vercel
-"""
 from fastapi import FastAPI
-from mangum import Mangum
 
-# Create minimal app
 app = FastAPI()
 
 @app.get("/")
-def root():
-    return {"message": "Hello from Vercel!", "status": "working"}
+def read_root():
+    return {"Hello": "World", "deployed": "on Vercel"}
 
-@app.get("/api/test")
-def test():
-    return {"test": "API endpoint working"}
-
-# Vercel handler
-handler = Mangum(app, lifespan="off")
+@app.get("/api/health")
+def health():
+    return {"status": "healthy"}
