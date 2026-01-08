@@ -520,10 +520,22 @@ from fastapi.responses import FileResponse
 import os
 
 frontend_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), "frontend")
+print(f"DEBUG: Frontend Directory resolved to: {frontend_dir}")
+print(f"DEBUG: Directory exists? {os.path.exists(frontend_dir)}")
+
+# Explicit root route for index.html (ALWAYS REGISTERED)
+@app.get("/")
+async def read_root():
+    if not os.path.exists(frontend_dir):
+         print("ERROR: Frontend directory not found!")
+         raise HTTPException(status_code=500, detail="Frontend directory not found")
+    return FileResponse(os.path.join(frontend_dir, "index.html"))
+
 if os.path.exists(frontend_dir):
     # Mount /static for explicit asset loading if needed
     app.mount("/static", StaticFiles(directory=frontend_dir), name="static")
-    # Mount root to serve frontend (SPA style) - MUST BE LAST
+
+    # Mount root to serve other files (css, js) - MUST BE LAST
     app.mount("/", StaticFiles(directory=frontend_dir, html=True), name="frontend")
 
 
