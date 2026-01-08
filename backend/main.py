@@ -516,9 +516,50 @@ async def get_decision_summary(disruption_id: str, operator_response: OperatorRe
 
 
 # ============================================================================
-# Frontend serving is handled by Vercel's static file routing
-# The FastAPI app only serves API endpoints under /api/*
+# Static File Serving for Vercel
 # ============================================================================
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
+import os
+
+# Find frontend directory
+frontend_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "frontend")
+
+# Root route - serve landing page
+@app.get("/")
+async def serve_root():
+    index_path = os.path.join(frontend_dir, "index.html")
+    if os.path.exists(index_path):
+        return FileResponse(index_path)
+    return {"message": "SupplyChain Sentinel API", "docs": "/docs"}
+
+# Serve static files
+if os.path.exists(frontend_dir):
+    app.mount("/static", StaticFiles(directory=frontend_dir), name="static")
+    
+    # Serve HTML files directly
+    @app.get("/{filename}.html")
+    async def serve_html(filename: str):
+        file_path = os.path.join(frontend_dir, f"{filename}.html")
+        if os.path.exists(file_path):
+            return FileResponse(file_path)
+        raise HTTPException(status_code=404, detail="Page not found")
+    
+    # Serve CSS files
+    @app.get("/{filename}.css")
+    async def serve_css(filename: str):
+        file_path = os.path.join(frontend_dir, f"{filename}.css")
+        if os.path.exists(file_path):
+            return FileResponse(file_path, media_type="text/css")
+        raise HTTPException(status_code=404, detail="CSS not found")
+    
+    # Serve JS files
+    @app.get("/{filename}.js")
+    async def serve_js(filename: str):
+        file_path = os.path.join(frontend_dir, f"{filename}.js")
+        if os.path.exists(file_path):
+            return FileResponse(file_path, media_type="application/javascript")
+        raise HTTPException(status_code=404, detail="JS not found")
 
 
 if __name__ == "__main__":
