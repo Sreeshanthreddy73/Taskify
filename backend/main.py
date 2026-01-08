@@ -10,6 +10,8 @@ from models import (
 )
 from services import disruption_service, impact_service, decision_engine, action_service, ai_service, auth_service
 from database import get_db, init_db
+from auth_dependency import get_current_operator
+from db_models import Operator
 
 # Initialize FastAPI app
 app = FastAPI(
@@ -141,8 +143,11 @@ async def get_operators(db: Session = Depends(get_db)):
 
 
 @app.get("/api/disruptions", response_model=List[Disruption])
-async def get_disruptions(db: Session = Depends(get_db)):
-    """Get all active disruptions"""
+async def get_disruptions(
+    db: Session = Depends(get_db),
+    operator: Operator = Depends(get_current_operator)
+):
+    """Get all active disruptions (requires authentication)"""
     try:
         return disruption_service.get_all_disruptions(db)
     except Exception as e:
@@ -177,8 +182,12 @@ async def get_disruptions_by_severity(severity: Severity):
 # ============================================================================
 
 @app.get("/api/impact/{disruption_id}", response_model=ImpactAnalysis)
-async def analyze_impact(disruption_id: str):
-    """Analyze the impact of a disruption"""
+async def analyze_impact(
+    disruption_id: str,
+    db: Session = Depends(get_db),
+    operator: Operator = Depends(get_current_operator)
+):
+    """Analyze the impact of a disruption (requires authentication)"""
     try:
         return impact_service.analyze_disruption_impact(disruption_id)
     except ValueError as e:
@@ -229,9 +238,14 @@ async def parse_operator_message(message: dict):
 # ============================================================================
 
 @app.post("/api/decisions/{disruption_id}", response_model=List[Decision])
-async def make_decisions(disruption_id: str, operator_response: OperatorResponse):
+async def make_decisions(
+    disruption_id: str,
+    operator_response: OperatorResponse,
+    db: Session = Depends(get_db),
+    operator: Operator = Depends(get_current_operator)
+):
     """
-    Process decisions for all affected shipments based on operator input.
+    Process decisions for all affected shipments based on operator input (requires authentication).
     This uses the deterministic decision engine (no AI).
     """
     try:
@@ -366,8 +380,13 @@ async def update_ticket(ticket_id: str, update: dict, db: Session = Depends(get_
 
 
 @app.post("/api/tickets/{ticket_id}/approve")
-async def approve_ticket(ticket_id: str, request: dict, db: Session = Depends(get_db)):
-    """Approve a ticket"""
+async def approve_ticket(
+    ticket_id: str,
+    request: dict,
+    db: Session = Depends(get_db),
+    operator: Operator = Depends(get_current_operator)
+):
+    """Approve a ticket (requires authentication)"""
     try:
         ticket = action_service.update_ticket_status(ticket_id, "approved", db)
         if not ticket:
