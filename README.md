@@ -1,287 +1,195 @@
-# LogiTech - AI-Assisted Supply Chain Disruption Response System
+# LogiTech - Supply Chain Disruption Response System
 
-## 🎯 Problem Statement
+AI-assisted, agent-driven disruption response system for logistics companies.
 
-**Supply chains frequently fail not because disruptions are unknown, but because responses are slow, uncoordinated, or inconsistent.**
+## 🚀 Features
 
-Current systems raise alerts but do not help operators decide what to do next. When disruptions occur (port strikes, severe weather, route closures), logistics teams waste critical time:
-- Manually analyzing impact across routes and shipments
-- Debating response options without clear decision frameworks
-- Coordinating actions across disconnected systems
-- Explaining decisions after the fact
+- **Real-time Disruption Monitoring** - Track active supply chain disruptions
+- **AI-Powered Impact Analysis** - Intelligent analysis of affected shipments
+- **Automated Action Tickets** - Generate detailed response tickets
+- **Database Persistence** - SQLite with SQLAlchemy ORM
+- **Secure Authentication** - Password hashing with bcrypt
+- **Multi-user Support** - Role-based access (Manager, Operator, Analyst)
+- **Beautiful UI** - Modern, responsive design with real-time updates
 
-This delay costs millions in missed deliveries, spoiled goods, and customer dissatisfaction.
+## 📋 Prerequisites
 
-## 💡 Solution
-
-**LogiTech** is an AI-assisted, agent-driven disruption response system that converts disruption signals into validated logistics actions.
-
-### How It Works
-
-1. **Disruption Detected** → System identifies or receives disruption events
-2. **AI Engages** → Conversational interface asks clarifying questions about priorities and constraints
-3. **Backend Decides** → Deterministic rule engine evaluates impact and generates decisions
-4. **Actions Created** → System generates action tickets with clear explanations
-5. **AI Explains** → Natural language summaries explain why each decision was made
-
-### Key Features
-
-- 🚨 **Real-time Disruption Feed** - Monitor active disruptions with severity levels
-- 💬 **AI-Assisted Conversation** - Natural language interface guides decision-making
-- 🎯 **Deterministic Decision Engine** - Rule-based logic ensures consistent, auditable decisions
-- 📋 **Action Tickets** - Clear, actionable recommendations with detailed explanations
-- 🌍 **Global Scope** - Designed for worldwide supply chain operations
-
-## 🏗️ Architecture
-
-```
-┌─────────────────┐      ┌──────────────────┐      ┌─────────────────┐
-│   Disruption    │──────▶│  Impact Analysis │──────▶│  AI Assistant   │
-│     Service     │      │     Service      │      │   (Questions)   │
-└─────────────────┘      └──────────────────┘      └─────────────────┘
-                                                             │
-                                                             ▼
-                                                    ┌─────────────────┐
-                                                    │    Operator     │
-                                                    │    Response     │
-                                                    └─────────────────┘
-                                                             │
-                                                             ▼
-┌─────────────────┐      ┌──────────────────┐      ┌─────────────────┐
-│  Action Ticket  │◀─────│ Decision Engine  │◀─────│  AI Assistant   │
-│    Service      │      │  (Rule-Based)    │      │  (Explanation)  │
-└─────────────────┘      └──────────────────┘      └─────────────────┘
-```
-
-### Technology Stack
-
-**Backend:**
-- Python 3.11
-- FastAPI (modern, fast web framework)
-- Pydantic (data validation)
-- Uvicorn (ASGI server)
-
-**Frontend:**
-- Vanilla HTML5, CSS3, JavaScript (ES6+)
-- Modern CSS (Grid, Flexbox, Custom Properties)
-- Fetch API for backend communication
-
-**Deployment:**
 - Docker & Docker Compose
-- Nginx (frontend static file serving)
-- Containerized microservices
+- Git
 
-## 🚀 Quick Start
+## 🛠️ Quick Start
 
-### Prerequisites
-
-- Docker Desktop installed
-- Docker Compose installed
-- Git (for cloning)
-
-### Installation & Running
+### 1. Clone the Repository
 
 ```bash
-# Clone the repository
-git clone <repository-url>
-cd LogiTech
-
-# Start all services with Docker Compose
-docker-compose up --build
-
-# Access the application
-# Frontend: http://localhost
-# Backend API: http://localhost:8000/docs
+git clone https://github.com/Sreeshanthreddy73/Taskify.git
+cd Taskify
 ```
 
-That's it! The entire system will be running with one command.
-
-### Stopping the Application
+### 2. Start the Application
 
 ```bash
-# Stop all services
-docker-compose down
-
-# Stop and remove volumes
-docker-compose down -v
+docker compose up -d
 ```
 
-## 📖 Usage Guide
+### 3. Access the Dashboard
 
-### 1. View Active Disruptions
-
-- The left panel shows all active disruptions
-- Filter by severity: Critical, High, Medium, Low
-- Each card shows location, type, duration, and affected routes
-
-### 2. Analyze a Disruption
-
-- Click on any disruption card
-- The AI assistant will analyze impact and ask clarifying questions
-- Questions cover: rerouting permissions, cost tolerance, priority preferences
-
-### 3. Provide Guidance
-
-- Type your response in natural language
-- Examples:
-  - "Yes, reroute high-priority shipments with up to 30% cost increase"
-  - "Delay all shipments, no rerouting"
-  - "Prioritize perishable goods, max 25% cost increase"
-
-### 4. Review Action Tickets
-
-- The right panel displays generated action tickets
-- Each ticket includes:
-  - Action type (Reroute, Delay, Escalate)
-  - Detailed explanation
-  - Estimated impact
-  - Required next steps
-
-## 🧠 Decision Engine Rules
-
-The system uses **deterministic, rule-based logic** (not AI) for decision-making:
-
-### High Priority Shipments (Priority ≥ 8)
-- Delay tolerance < 24h → **REROUTE** (even with extra cost)
-- Delay tolerance ≥ 24h → **DELAY** (if within tolerance)
-
-### Medium Priority Shipments (Priority 4-7)
-- Delay tolerance < 12h → **REROUTE**
-- Delay tolerance ≥ 12h and cost increase < 20% → **DELAY**
-- Otherwise → **ESCALATE**
-
-### Low Priority Shipments (Priority < 4)
-- Default → **DELAY**
-- Delay > 7 days → **ESCALATE**
-
-### Special Cases
-- Perishable goods + delay > 48h → **REROUTE immediately**
-- No viable alternative routes → **ESCALATE**
-
-## 📡 API Documentation
-
-### Disruptions
-
-```http
-GET /api/disruptions
-GET /api/disruptions/{disruption_id}
-GET /api/disruptions/severity/{severity}
+Open your browser and go to:
+```
+http://localhost/direct-dashboard.html
 ```
 
-### Impact Analysis
-
-```http
-GET /api/impact/{disruption_id}
+Or login manually at:
+```
+http://localhost/login.html
 ```
 
-### Conversation
+## 👥 Demo Accounts
 
-```http
-GET /api/conversation/question/{disruption_id}
-POST /api/conversation/parse
+| Operator ID | Password | Role | Name |
+|------------|----------|------|------|
+| OP-001 | manager123 | Manager | Sarah Chen |
+| OP-002 | operator123 | Operator | Marcus Rodriguez |
+| OP-003 | analyst123 | Analyst | Aisha Patel |
+| OP-004 | operator123 | Operator | James Wilson |
+| OP-005 | manager123 | Manager | Li Wei |
+
+## 🔧 Configuration
+
+### Enable AI Assistant (Optional)
+
+1. Get a free API key from [Google AI Studio](https://aistudio.google.com/app/apikey)
+2. Create `backend/.env`:
+   ```
+   GEMINI_API_KEY=your_api_key_here
+   ```
+3. Restart backend:
+   ```bash
+   docker compose restart backend
+   ```
+
+## 📁 Project Structure
+
+```
+LogiTech/
+├── backend/              # FastAPI backend
+│   ├── services/        # Business logic services
+│   ├── db_models.py     # SQLAlchemy models
+│   ├── database.py      # Database configuration
+│   ├── init_db.py       # Database initialization
+│   ├── main.py          # FastAPI application
+│   └── requirements.txt # Python dependencies
+├── frontend/            # Web frontend
+│   ├── dashboard.html   # Main dashboard
+│   ├── login.html       # Login page
+│   ├── signup.html      # Registration page
+│   ├── app.js           # Main application logic
+│   └── styles.css       # Styling
+└── docker-compose.yml   # Docker configuration
 ```
 
-### Decisions & Tickets
+## 🗄️ Database
 
-```http
-POST /api/decisions/{disruption_id}
-POST /api/tickets/{disruption_id}
-GET /api/tickets
-GET /api/tickets/{ticket_id}
-PATCH /api/tickets/{ticket_id}/status
+- **Type**: SQLite
+- **ORM**: SQLAlchemy
+- **Location**: `backend/data/logitech.db`
+- **Persistence**: Docker volume (`backend-data`)
+
+### Database Models
+
+- **OperatorDB** - User accounts with password hashing
+- **DisruptionDB** - Supply chain disruptions
+- **ActionTicketDB** - Response action tickets
+- **SessionDB** - User sessions
+- **ConversationDB** - AI conversation history
+
+## 🔐 Security Features
+
+- ✅ Password hashing with bcrypt
+- ✅ Session-based authentication
+- ✅ Environment variable protection
+- ✅ CORS configuration
+- ✅ SQL injection prevention (SQLAlchemy ORM)
+
+## 📊 Sample Data
+
+The system comes pre-loaded with:
+- 5 demo operator accounts
+- 5 sample disruptions:
+  - Port Strike (Chennai Port)
+  - Weather Delay (Pacific Shipping Lane)
+  - Route Closure (Suez Canal)
+  - Equipment Failure (Singapore Hub)
+  - Customs Delay (Rotterdam Port)
+
+## 🧪 Testing
+
+### Test Workflow
+
+1. Login with demo account (OP-001 / manager123)
+2. Click on a disruption (e.g., "Chennai Port")
+3. Chat with AI: "Analyze impact"
+4. Generate action tickets
+5. Approve/manage tickets
+6. Test filters and export
+
+### Test Features
+
+- ✅ User authentication
+- ✅ Disruption monitoring
+- ✅ AI assistant (requires API key)
+- ✅ Ticket generation
+- ✅ Ticket management
+- ✅ Notifications
+- ✅ Data persistence
+
+## 🐳 Docker Commands
+
+```bash
+# Start application
+docker compose up -d
+
+# Stop application
+docker compose down
+
+# Restart services
+docker compose restart
+
+# View logs
+docker compose logs -f
+
+# Rebuild containers
+docker compose build --no-cache
 ```
 
-### Summary
+## 🌐 API Endpoints
 
-```http
-POST /api/summary/{disruption_id}
-```
+- `POST /api/auth/register` - Register new operator
+- `POST /api/auth/login` - Login
+- `POST /api/auth/logout` - Logout
+- `GET /api/auth/verify` - Verify session
+- `GET /api/disruptions` - Get all disruptions
+- `GET /api/tickets` - Get all tickets
+- `POST /api/tickets` - Create ticket
+- `PUT /api/tickets/{id}` - Update ticket
 
-Full interactive API documentation available at: `http://localhost:8000/docs`
+## 📝 License
 
-## 🎓 Domain Alignment: LogiTech
+This project is for educational and demonstration purposes.
 
-This project addresses a critical **LogiTech (Logistics & Supply Chain)** problem:
+## 👨‍💻 Author
 
-- **Problem Domain**: Operational efficiency and visibility during disruptions
-- **Real-World Impact**: Reduces response time from hours to minutes
-- **Scalability**: Designed for global supply chain operations
-- **Business Value**: Prevents millions in losses from delayed or spoiled shipments
+Created as a demonstration of modern web application development with:
+- FastAPI (Python)
+- SQLAlchemy ORM
+- Docker containerization
+- Real-time UI updates
+- AI integration capabilities
 
-## 🔒 Assumptions & Limitations
+## 🆘 Support
 
-### Assumptions
-
-1. **Mock Data**: Demo uses pre-generated disruptions, routes, and shipments
-2. **In-Memory Storage**: Data is not persisted between restarts
-3. **Simplified Routing**: Alternative route selection uses basic criteria
-4. **Cost Estimation**: Cost impacts are simplified calculations
-5. **AI Service**: Currently uses template-based responses (can be upgraded to LLM)
-
-### Known Limitations
-
-1. **No Authentication**: No user login or role-based access control
-2. **No Real-Time Updates**: Disruption feed requires manual refresh
-3. **No Database**: All data stored in memory (resets on restart)
-4. **No External Integrations**: No connection to real logistics APIs
-5. **Simplified Decision Logic**: Production systems would need more complex rules
-
-### Future Enhancements
-
-- Real-time disruption monitoring via external APIs
-- Persistent database (PostgreSQL/MongoDB)
-- User authentication and role management
-- Advanced ML-based impact prediction
-- Integration with logistics platforms (SAP, Oracle)
-- Mobile application
-- Voice interface using speech recognition
-
-## 🏆 Build2Break Hackathon Compliance
-
-### ✅ Deployment
-- Docker Compose for single-command deployment
-- No manual configuration required
-- All dependencies containerized
-
-### ✅ Documentation
-- Clear problem statement and domain alignment
-- Complete setup instructions
-- Architecture overview
-- Assumptions and limitations documented
-
-### ✅ Evaluation Criteria
-
-**Solution Quality (5 pts):**
-- End-to-end disruption response workflow
-- AI-guided decision process
-- Clear action tickets with explanations
-
-**Impact (5 pts):**
-- Addresses real LogiTech problem
-- Reduces response time significantly
-- Prevents costly delays and losses
-
-**Reliability (5 pts):**
-- Deterministic decision engine
-- Comprehensive error handling
-- Input validation with Pydantic
-
-**Technical Alignment (5 pts):**
-- Modern tech stack (FastAPI, Docker)
-- Clean service separation
-- RESTful API design
-- No platform-specific dependencies
-
-## 👥 Team
-
-- **Domain**: LogiTech (Logistics & Supply Chain)
-- **Project Type**: Web Application
-- **Deployment**: Docker Compose
-
-## 📄 License
-
-This project is created for the Build2Break hackathon.
+For issues or questions, please open an issue on GitHub.
 
 ---
 
-**Built with ❤️ for Build2Break Hackathon**
+**Built with ❤️ for logistics professionals**
