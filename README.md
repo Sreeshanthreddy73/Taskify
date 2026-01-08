@@ -40,49 +40,26 @@ graph TD
 - **Multi-user Support** - Role-based access (Manager, Operator, Analyst)
 - **Beautiful UI** - Modern, responsive design with real-time updates
 
-## 📋 Prerequisites
+## 💻 How to Run (Simple)
 
-- Docker & Docker Compose
-- Git
+### Step 1: Install
+Open your terminal inside the `backend` folder and run:
+```bash
+pip install -r requirements.txt
+```
 
-## 🛠️ Quick Start
+### Step 2: Run
+Start the server with this command:
+```bash
+python run.py
+```
+*(If that doesn't work, try `python -m uvicorn main:app --reload --host 127.0.0.1 --port 8000`)*
 
-### Option 1: Docker (Recommended)
+### Step 3: Open
+Go to your browser and visit:
+👉 **[http://localhost:8000](http://localhost:8000)**
 
-1.  **Clone the Repository**
-    ```bash
-    git clone https://github.com/Sreeshanthreddy73/Taskify.git
-    cd Taskify
-    ```
-
-2.  **Start Application**
-    ```bash
-    docker compose up --build
-    ```
-
-3.  **Access Dashboard**
-    Open your browser and go to:
-    👉 **[http://localhost:8000](http://localhost:8000)**
-
-### Option 2: Local Setup (Python)
-
-1.  **Install Dependencies**
-    ```bash
-    cd backend
-    pip install -r requirements.txt
-    ```
-
-2.  **Initialize Database**
-    ```bash
-    python init_db.py
-    ```
-
-3.  **Run Server**
-    ```bash
-    python -m uvicorn main:app --reload --host 127.0.0.1 --port 8000
-    ```
-4.  **Access Dashboard**
-    Go to **[http://localhost:8000](http://localhost:8000)**
+That's it! Log in using the credentials below.
 
 ## 👥 Demo Accounts
 
