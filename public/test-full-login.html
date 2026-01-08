@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Full Login Flow Test</title>
+    <style>
+        body {
+            font-family: Arial;
+            padding: 20px;
+        }
+
+        .step {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .success {
+            background: #d4edda;
+        }
+
+        .error {
+            background: #f8d7da;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin: 5px;
+            cursor: pointer;
+        }
+
+        pre {
+            background: #f5f5f5;
+            padding: 10px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Complete Login Flow Test</h1>
+    <button onclick="testFullFlow()">Test Complete Login Flow</button>
+    <button onclick="checkStorage()">Check SessionStorage</button>
+    <button onclick="clearStorage()">Clear Storage</button>
+
+    <div id="results"></div>
+
+    <script>
+        const API_BASE_URL = 'http://localhost:8000/api';
+
+        async function testFullFlow() {
+            const results = document.getElementById('results');
+            results.innerHTML = '<h2>Testing...</h2>';
+
+            try {
+                // Step 1: Login
+                addStep('Step 1: Logging in with OP-001...', 'info');
+                const loginResponse = await fetch(`${API_BASE_URL}/auth/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        operator_id: 'OP-001',
+                        password: 'manager123'
+                    })
+                });
+
+                if (!loginResponse.ok) {
+                    throw new Error('Login failed: ' + loginResponse.status);
+                }
+
+                const loginData = await loginResponse.json();
+                addStep('✅ Login successful!', 'success');
+                addStep('Operator: ' + loginData.operator.name, 'info');
+                addStep('Token: ' + loginData.session_token.substring(0, 30) + '...', 'info');
+
+                // Step 2: Store in sessionStorage
+                addStep('Step 2: Storing in sessionStorage...', 'info');
+                sessionStorage.setItem('operator', JSON.stringify(loginData.operator));
+                sessionStorage.setItem('sessionToken', loginData.session_token);
+                sessionStorage.setItem('loginTime', new Date().toISOString());
+                addStep('✅ Stored in sessionStorage', 'success');
+
+                // Step 3: Verify session
+                addStep('Step 3: Verifying session...', 'info');
+                const verifyResponse = await fetch(`${API_BASE_URL}/auth/verify`, {
+                    headers: {
+                        'Authorization': `Bearer ${loginData.session_token}`
+                    }
+                });
+
+                if (!verifyResponse.ok) {
+                    throw new Error('Verification failed: ' + verifyResponse.status);
+                }
+
+                const verifyData = await verifyResponse.json();
+                addStep('✅ Session verified!', 'success');
+                addStep('Verified operator: ' + verifyData.operator.name, 'info');
+
+                // Step 4: Check what's in storage
+                addStep('Step 4: Checking sessionStorage...', 'info');
+                const storedOperator = sessionStorage.getItem('operator');
+                const storedToken = sessionStorage.getItem('sessionToken');
+                addStep('Stored operator: ' + (storedOperator ? 'YES' : 'NO'), storedOperator ? 'success' : 'error');
+                addStep('Stored token: ' + (storedToken ? 'YES' : 'NO'), storedToken ? 'success' : 'error');
+
+                addStep('🎉 ALL TESTS PASSED! You can now navigate to dashboard.', 'success');
+                addStep('<a href="/dashboard.html" style="font-size: 18px; color: blue;">Click here to go to Dashboard</a>', 'success');
+
+            } catch (error) {
+                addStep('❌ ERROR: ' + error.message, 'error');
+                console.error(error);
+            }
+        }
+
+        function checkStorage() {
+            const results = document.getElementById('results');
+            results.innerHTML = '<h2>SessionStorage Contents:</h2>';
+
+            const operator = sessionStorage.getItem('operator');
+            const token = sessionStorage.getItem('sessionToken');
+            const loginTime = sessionStorage.getItem('loginTime');
+
+            addStep('Operator: ' + (operator || 'NOT SET'), operator ? 'success' : 'error');
+            addStep('Token: ' + (token ? token.substring(0, 30) + '...' : 'NOT SET'), token ? 'success' : 'error');
+            addStep('Login Time: ' + (loginTime || 'NOT SET'), loginTime ? 'success' : 'error');
+
+            if (operator) {
+                addStep('Operator Details: <pre>' + JSON.stringify(JSON.parse(operator), null, 2) + '</pre>', 'info');
+            }
+        }
+
+        function clearStorage() {
+            sessionStorage.clear();
+            addStep('✅ SessionStorage cleared', 'success');
+        }
+
+        function addStep(message, type) {
+            const results = document.getElementById('results');
+            const div = document.createElement('div');
+            div.className = 'step ' + type;
+            div.innerHTML = message;
+            results.appendChild(div);
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Login Test - Detailed</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        #result {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            white-space: pre-wrap;
+        }
+
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Login API Test</h1>
+    <p>Testing: http://localhost:8000/api/auth/login</p>
+    <button onclick="testLogin()">Test Login with OP-001 / manager123</button>
+    <div id="result"></div>
+
+    <script>
+        async function testLogin() {
+            const resultEl = document.getElementById('result');
+            resultEl.textContent = 'Testing login...\n';
+            resultEl.className = '';
+
+            try {
+                console.log('Sending login request...');
+
+                const requestBody = {
+                    operator_id: 'OP-001',
+                    password: 'manager123'
+                };
+
+                console.log('Request body:', requestBody);
+
+                const response = await fetch('http://localhost:8000/api/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(requestBody)
+                });
+
+                console.log('Response status:', response.status);
+                console.log('Response headers:', response.headers);
+
+                const data = await response.json();
+                console.log('Response data:', data);
+
+                if (response.ok) {
+                    resultEl.textContent = '✅ SUCCESS!\n\n' +
+                        'Status: ' + response.status + '\n' +
+                        'Operator: ' + data.operator.name + '\n' +
+                        'Session Token: ' + data.session_token.substring(0, 20) + '...\n\n' +
+                        'Full Response:\n' + JSON.stringify(data, null, 2);
+                    resultEl.className = 'success';
+                } else {
+                    resultEl.textContent = '❌ FAILED!\n\n' +
+                        'Status: ' + response.status + '\n' +
+                        'Error: ' + JSON.stringify(data, null, 2);
+                    resultEl.className = 'error';
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                resultEl.textContent = '❌ ERROR!\n\n' +
+                    'Error Type: ' + error.name + '\n' +
+                    'Error Message: ' + error.message + '\n\n' +
+                    'This might be a CORS or network error.\n' +
+                    'Check the browser console (F12) for more details.';
+                resultEl.className = 'error';
+            }
+        }
+
+        // Auto-run test on page load
+        window.addEventListener('load', () => {
+            console.log('Page loaded, running test...');
+            testLogin();
+        });
+    </script>
+</body>
+
+</html>

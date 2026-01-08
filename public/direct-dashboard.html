@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Direct Dashboard Access</title>
+</head>
+
+<body>
+    <h1>Redirecting to Dashboard...</h1>
+    <script>
+        // Set session data directly
+        sessionStorage.setItem('operator', JSON.stringify({
+            id: 'OP-001',
+            name: 'Sarah Chen',
+            role: 'manager',
+            email: 'sarah.chen@logitech.com',
+            department: 'Operations'
+        }));
+        sessionStorage.setItem('sessionToken', 'DIRECT_ACCESS_TOKEN_' + Date.now());
+        sessionStorage.setItem('loginTime', new Date().toISOString());
+
+        // Force redirect with cache bypass
+        window.location.href = '/dashboard.html?' + Date.now();
+    </script>
+</body>
+
+</html>
