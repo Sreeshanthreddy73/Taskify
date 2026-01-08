@@ -36,3 +36,9 @@ htmlcov/
 brain/
 
 SupplyChainSentinel_Submission.zip
+
+# Vercel
+.vercel
+*.tar
+deadlock_*.png
+deadlock_*.csv
