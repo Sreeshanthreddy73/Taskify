@@ -519,8 +519,12 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 import os
 
-frontend_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), "frontend")
-print(f"DEBUG: Frontend Directory resolved to: {frontend_dir}")
+# Robust Directory Resolution
+base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+frontend_dir = os.path.join(base_dir, "frontend")
+
+print(f"DEBUG: Base Directory: {base_dir}")
+print(f"DEBUG: Frontend Directory: {frontend_dir}")
 print(f"DEBUG: Directory exists? {os.path.exists(frontend_dir)}")
 
 # Explicit root route for index.html (ALWAYS REGISTERED)
