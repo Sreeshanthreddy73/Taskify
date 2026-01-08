@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Simple Login Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+
+        input,
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            font-size: 16px;
+        }
+
+        button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+        }
+
+        .success {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Direct Login Test</h1>
+    <p>This bypasses all complex code to test the basic login.</p>
+
+    <input type="text" id="opId" value="OP-001" placeholder="Operator ID">
+    <input type="password" id="pwd" value="manager123" placeholder="Password">
+    <button onclick="doLogin()">LOGIN NOW</button>
+
+    <div id="result"></div>
+
+    <script>
+        async function doLogin() {
+            const resultDiv = document.getElementById('result');
+            const opId = document.getElementById('opId').value;
+            const pwd = document.getElementById('pwd').value;
+
+            resultDiv.textContent = 'Logging in...';
+            resultDiv.className = '';
+
+            try {
+                const response = await fetch('http://localhost:8000/api/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        operator_id: opId,
+                        password: pwd
+                    })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    // Store session
+                    sessionStorage.setItem('operator', JSON.stringify(data.operator));
+                    sessionStorage.setItem('sessionToken', data.session_token);
+
+                    resultDiv.innerHTML = `
+                        <strong>✅ LOGIN SUCCESSFUL!</strong><br><br>
+                        Operator: ${data.operator.name}<br>
+                        Role: ${data.operator.role}<br>
+                        Token: ${data.session_token.substring(0, 30)}...<br><br>
+                        <a href="/dashboard.html" style="font-size: 20px; color: blue; text-decoration: none; font-weight: bold;">
+                            → GO TO DASHBOARD
+                        </a>
+                    `;
+                    resultDiv.className = 'success';
+                } else {
+                    resultDiv.textContent = '❌ Login failed: ' + (data.detail || 'Unknown error');
+                    resultDiv.className = 'error';
+                }
+            } catch (error) {
+                resultDiv.textContent = '❌ ERROR: ' + error.message + '\n\nThis might be a network/CORS error. Check browser console (F12).';
+                resultDiv.className = 'error';
+                console.error('Login error:', error);
+            }
+        }
+
+        // Auto-login on page load for testing
+        window.addEventListener('load', () => {
+            console.log('Page loaded, auto-running login test...');
+            setTimeout(doLogin, 500);
+        });
+    </script>
+</body>
+
+</html>

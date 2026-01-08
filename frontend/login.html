@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="LogiTech - AI-assisted supply chain disruption response platform for logistics operators">
+    <title>LogiTech - Operator Login</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="login.css">
+</head>
+
+<body>
+    <!-- Animated Background -->
+    <div class="background-animation">
+        <div class="circle circle-1"></div>
+        <div class="circle circle-2"></div>
+        <div class="circle circle-3"></div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Left Section: Hero -->
+        <section class="hero-section">
+            <div class="logo-container">
+                <svg width="48" height="48" viewBox="0 0 48 48" fill="none" class="logo-icon">
+                    <rect width="48" height="48" rx="12" fill="url(#gradient1)" />
+                    <path d="M24 12L36 18V30L24 36L12 30V18L24 12Z" stroke="white" stroke-width="3"
+                        stroke-linejoin="round" />
+                    <circle cx="24" cy="24" r="4" fill="white" />
+                    <defs>
+                        <linearGradient id="gradient1" x1="0" y1="0" x2="48" y2="48">
+                            <stop offset="0%" stop-color="#6366f1" />
+                            <stop offset="100%" stop-color="#8b5cf6" />
+                        </linearGradient>
+                    </defs>
+                </svg>
+                <h1 class="logo-text">LogiTech</h1>
+            </div>
+
+            <div class="hero-content">
+                <h2 class="hero-title">
+                    AI-Assisted Disruption
+                    <span class="gradient-text">Response Platform</span>
+                </h2>
+                <p class="hero-description">
+                    Convert supply chain disruptions into validated logistics actions in minutes, not hours.
+                    Coordinate responses across routes and shipments with intelligent decision support.
+                </p>
+
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">🚨</div>
+                        <h3>Real-Time Alerts</h3>
+                        <p>Monitor disruptions as they happen</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🤖</div>
+                        <h3>AI Guidance</h3>
+                        <p>Smart questions for faster decisions</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📋</div>
+                        <h3>Action Tickets</h3>
+                        <p>Clear next steps with explanations</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">⚡</div>
+                        <h3>Instant Response</h3>
+                        <p>Minutes instead of hours</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stats-container">
+                <div class="stat-item">
+                    <div class="stat-value">95%</div>
+                    <div class="stat-label">Faster Response</div>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat-item">
+                    <div class="stat-value">24/7</div>
+                    <div class="stat-label">Monitoring</div>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat-item">
+                    <div class="stat-value">100%</div>
+                    <div class="stat-label">Coordinated</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Right Section: Login Form -->
+        <section class="login-section">
+            <div class="login-card">
+                <div class="login-header">
+                    <h2>Operator Login</h2>
+                    <p>Enter your credentials to access the platform</p>
+                </div>
+
+                <form id="loginForm" class="login-form">
+                    <div class="form-group">
+                        <label for="operatorId">Operator ID</label>
+                        <div class="input-wrapper">
+                            <svg class="input-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path
+                                    d="M10 10C12.21 10 14 8.21 14 6C14 3.79 12.21 2 10 2C7.79 2 6 3.79 6 6C6 8.21 7.79 10 10 10ZM10 12C7.33 12 2 13.34 2 16V18H18V16C18 13.34 12.67 12 10 12Z"
+                                    fill="currentColor" />
+                            </svg>
+                            <input type="text" id="operatorId" name="operatorId" placeholder="e.g., OP-001" required
+                                autocomplete="off">
+                        </div>
+                        <div class="input-hint">Use OP-001 through OP-005 (see demo buttons below)</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <div class="input-wrapper">
+                            <svg class="input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                            </svg>
+                            <input type="password" id="password" name="password" placeholder="••••••••" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="role">Role (Optional)</label>
+                        <div class="input-wrapper">
+                            <svg class="input-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M10 2L3 7V13C3 16.31 5.84 19.48 10 20C14.16 19.48 17 16.31 17 13V7L10 2Z"
+                                    fill="currentColor" />
+                            </svg>
+                            <select id="role" name="role">
+                                <option value="">Auto-detect from ID</option>
+                                <option value="manager">Manager</option>
+                                <option value="coordinator">Coordinator</option>
+                                <option value="analyst">Analyst</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="login-button">
+                        <span class="button-text">Access Platform</span>
+                        <svg class="button-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M10 3L9 4L14 9H3V11H14L9 16L10 17L17 10L10 3Z" fill="currentColor" />
+                        </svg>
+                    </button>
+
+                    <div id="errorMessage" class="error-message"></div>
+                </form>
+
+                <div class="login-footer">
+                    <p class="footer-text">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                            <path
+                                d="M8 1C4.13 1 1 4.13 1 8C1 11.87 4.13 15 8 15C11.87 15 15 11.87 15 8C15 4.13 11.87 1 8 1ZM8 13C5.24 13 3 10.76 3 8C3 5.24 5.24 3 8 3C10.76 3 13 5.24 13 8C13 10.76 10.76 13 8 13Z"
+                                fill="currentColor" />
+                            <path d="M7 5H9V7H7V5ZM7 9H9V11H7V9Z" fill="currentColor" />
+                        </svg>
+                        Secure access for authorized logistics operators only
+                    </p>
+                    <p class="footer-text" style="margin-top: 1rem;">
+                        Don't have an account? <a href="signup.html"
+                            style="color: #6366f1; text-decoration: none; font-weight: 600;">Sign Up</a>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Quick Access Demo IDs -->
+            <div class="demo-ids">
+                <p class="demo-title">Demo Operator IDs:</p>
+                <div class="demo-buttons">
+                    <button class="demo-button" onclick="fillCredentials('OP-001', 'manager123')">
+                        <span class="demo-id">OP-001</span>
+                        <span class="demo-role">Manager (P: manager123)</span>
+                    </button>
+                    <button class="demo-button" onclick="fillCredentials('OP-002', 'operator123')">
+                        <span class="demo-id">OP-002</span>
+                        <span class="demo-role">Operator (P: operator123)</span>
+                    </button>
+                    <button class="demo-button" onclick="fillCredentials('OP-003', 'analyst123')">
+                        <span class="demo-id">OP-003</span>
+                        <span class="demo-role">Analyst (P: analyst123)</span>
+                    </button>
+                    <button class="demo-button" onclick="fillCredentials('OP-004', 'operator123')">
+                        <span class="demo-id">OP-004</span>
+                        <span class="demo-role">Operator (P: operator123)</span>
+                    </button>
+                    <button class="demo-button" onclick="fillCredentials('OP-005', 'manager123')">
+                        <span class="demo-id">OP-005</span>
+                        <span class="demo-role">Manager (P: manager123)</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script src="login.js?v=2.0"></script>
+</body>
+
+</html>

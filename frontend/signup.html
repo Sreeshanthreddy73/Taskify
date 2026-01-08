@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="LogiTech - Create your operator account">
+    <title>LogiTech - Create Account</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="login.css">
+    <style>
+        .signup-section {
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .login-card {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Animated Background -->
+    <div class="background-animation">
+        <div class="circle circle-1"></div>
+        <div class="circle circle-2"></div>
+        <div class="circle circle-3"></div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Left Section: Hero (Hidden on mobile) -->
+        <section class="hero-section">
+            <div class="logo-container">
+                <svg width="48" height="48" viewBox="0 0 48 48" fill="none" class="logo-icon">
+                    <rect width="48" height="48" rx="12" fill="url(#gradient1)" />
+                    <path d="M24 12L36 18V30L24 36L12 30V18L24 12Z" stroke="white" stroke-width="3"
+                        stroke-linejoin="round" />
+                    <circle cx="24" cy="24" r="4" fill="white" />
+                    <defs>
+                        <linearGradient id="gradient1" x1="0" y1="0" x2="48" y2="48">
+                            <stop offset="0%" stop-color="#6366f1" />
+                            <stop offset="100%" stop-color="#8b5cf6" />
+                        </linearGradient>
+                    </defs>
+                </svg>
+                <h1 class="logo-text">LogiTech</h1>
+            </div>
+
+            <div class="hero-content">
+                <h2 class="hero-title">
+                    Join the Future of
+                    <span class="gradient-text">Logistics Response</span>
+                </h2>
+                <p class="hero-description">
+                    Empower your supply chain operations with AI-driven insights and coordinated disruption handling.
+                </p>
+            </div>
+        </section>
+
+        <!-- Right Section: Signup Form -->
+        <section class="signup-section">
+            <div class="login-card">
+                <div class="login-header">
+                    <h2>Create Operator Account</h2>
+                    <p>Register as a new logistics operator</p>
+                </div>
+
+                <form id="signupForm" class="login-form">
+                    <div class="form-group">
+                        <label for="operatorId">Operator ID</label>
+                        <div class="input-wrapper">
+                            <input type="text" id="operatorId" name="operatorId" placeholder="e.g., OP-005" required
+                                autocomplete="off">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="fullName">Full Name</label>
+                        <div class="input-wrapper">
+                            <input type="text" id="fullName" name="fullName" placeholder="John Doe" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <div class="input-wrapper">
+                            <input type="email" id="email" name="email" placeholder="john.doe@logitech.com" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="department">Department</label>
+                        <div class="input-wrapper">
+                            <input type="text" id="department" name="department" placeholder="Operations" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="role">Role</label>
+                        <div class="input-wrapper">
+                            <select id="role" name="role" required>
+                                <option value="manager">Manager</option>
+                                <option value="coordinator" selected>Coordinator</option>
+                                <option value="analyst">Analyst</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <div class="input-wrapper">
+                            <input type="password" id="password" name="password" placeholder="••••••••" required>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="login-button">
+                        <span class="button-text">Create Account</span>
+                    </button>
+
+                    <div id="errorMessage" class="error-message"></div>
+                </form>
+
+                <div class="login-footer">
+                    <p>Already have an account? <a href="login.html"
+                            style="color: #6366f1; text-decoration: none; font-weight: 600;">Log In</a></p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script src="signup.js?v=1.1"></script>
+</body>
+
+</html>
