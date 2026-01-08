@@ -520,12 +520,43 @@ from fastapi.responses import FileResponse
 import os
 
 # Robust Directory Resolution
-base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-frontend_dir = os.path.join(base_dir, "frontend")
+import os
+import sys
 
-print(f"DEBUG: Base Directory: {base_dir}")
-print(f"DEBUG: Frontend Directory: {frontend_dir}")
-print(f"DEBUG: Directory exists? {os.path.exists(frontend_dir)}")
+def find_frontend_dir():
+    # Strategy 1: Relative to this file (main.py is in backend/)
+    base_dir_1 = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    candidate_1 = os.path.join(base_dir_1, "frontend")
+    
+    # Strategy 2: Relative to CWD (if running from LogiTech/)
+    candidate_2 = os.path.join(os.getcwd(), "frontend")
+    
+    # Strategy 3: Relative to CWD (if running from backend/)
+    candidate_3 = os.path.join(os.getcwd(), "../frontend")
+    
+    # Strategy 4: Hardcoded User Path (Fallback)
+    candidate_4 = r"c:\Users\pothu\OneDrive\Desktop\LogiTech\frontend"
+
+    candidates = [candidate_1, candidate_2, candidate_3, candidate_4]
+    
+    for path in candidates:
+        abs_path = os.path.abspath(path)
+        print(f"DEBUG: Checking path: {abs_path}")
+        if os.path.exists(abs_path) and os.path.isdir(abs_path):
+            print(f"DEBUG: Found frontend at: {abs_path}")
+            return abs_path
+            
+    return None
+
+frontend_dir = find_frontend_dir()
+
+if frontend_dir is None:
+    print("CRITICAL ERROR: Could not find 'frontend' directory.")
+    # Fallback to current dir to valid crashing immediately, but UI won't load
+    frontend_dir = os.path.dirname(os.path.abspath(__file__)) 
+
+print(f"DEBUG: Final Frontend Directory: {frontend_dir}")
+print(f"DEBUG: Exists? {os.path.exists(frontend_dir)}")
 
 # Explicit root route for index.html (ALWAYS REGISTERED)
 @app.get("/")
