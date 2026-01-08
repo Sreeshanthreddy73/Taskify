@@ -515,72 +515,10 @@ async def get_decision_summary(disruption_id: str, operator_response: OperatorRe
 
 
 
-# Serve Frontend Static Files (Catch-all)
-# Serve Frontend Static Files (Catch-all)
-from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse, JSONResponse
-import os
-
-# Robust Directory Resolution
-import os
-import sys
-
-def find_frontend_dir():
-    # Strategy 1: Relative to this file (main.py is in backend/)
-    base_dir_1 = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    candidate_1 = os.path.join(base_dir_1, "frontend")
-    
-    # Strategy 2: Relative to CWD (if running from LogiTech/)
-    candidate_2 = os.path.join(os.getcwd(), "frontend")
-    
-    # Strategy 3: Relative to CWD (if running from backend/)
-    candidate_3 = os.path.join(os.getcwd(), "../frontend")
-    
-    # Strategy 4: Hardcoded User Path (Fallback)
-    candidate_4 = r"c:\Users\pothu\OneDrive\Desktop\LogiTech\frontend"
-
-    candidates = [candidate_1, candidate_2, candidate_3, candidate_4]
-    
-    for path in candidates:
-        abs_path = os.path.abspath(path)
-        print(f"DEBUG: Checking path: {abs_path}")
-        if os.path.exists(abs_path) and os.path.isdir(abs_path):
-            print(f"DEBUG: Found frontend at: {abs_path}")
-            return abs_path
-            
-    return None
-
-frontend_dir = find_frontend_dir()
-
-if frontend_dir is None:
-    print("CRITICAL ERROR: Could not find 'frontend' directory.")
-    # Fallback to current dir to valid crashing immediately, but UI won't load
-    frontend_dir = os.path.dirname(os.path.abspath(__file__)) 
-
-print(f"DEBUG: Final Frontend Directory: {frontend_dir}")
-print(f"DEBUG: Exists? {os.path.exists(frontend_dir)}")
-
-# Explicit root route for index.html (ALWAYS REGISTERED)
-@app.get("/")
-async def read_root():
-    try:
-        if not os.path.exists(frontend_dir):
-             return JSONResponse(status_code=500, content={"error": "Frontend dir not found", "path": frontend_dir})
-        
-        index_path = os.path.join(frontend_dir, "index.html")
-        if not os.path.exists(index_path):
-             return JSONResponse(status_code=500, content={"error": "index.html not found", "path": index_path})
-             
-        return FileResponse(index_path)
-    except Exception as e:
-        return JSONResponse(status_code=500, content={"error": "Internal Server Error", "detail": str(e)})
-
-if os.path.exists(frontend_dir):
-    # Mount /static for explicit asset loading if needed
-    app.mount("/static", StaticFiles(directory=frontend_dir), name="static")
-
-    # Mount root to serve other files (css, js) - MUST BE LAST
-    app.mount("/", StaticFiles(directory=frontend_dir, html=True), name="frontend")
+# ============================================================================
+# Frontend serving is handled by Vercel's static file routing
+# The FastAPI app only serves API endpoints under /api/*
+# ============================================================================
 
 
 if __name__ == "__main__":
