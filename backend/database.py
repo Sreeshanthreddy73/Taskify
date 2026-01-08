@@ -13,8 +13,10 @@ import os
 DATABASE_DIR = os.environ.get("DATABASE_DIR", "/tmp")
 DATABASE_URL = f"sqlite:///{os.path.join(DATABASE_DIR, 'logitech.db')}"
 
-# Ensure data directory exists
-os.makedirs(DATABASE_DIR, exist_ok=True)
+# Don't create directory at import time - defer until first use
+def ensure_db_dir():
+    """Ensure database directory exists - called lazily"""
+    os.makedirs(DATABASE_DIR, exist_ok=True)
 
 # Create SQLAlchemy engine
 engine = create_engine(
@@ -35,6 +37,7 @@ def get_db() -> Generator[Session, None, None]:
     Dependency function to get database session.
     Use with FastAPI's Depends() for automatic session management.
     """
+    ensure_db_dir()  # Ensure directory exists before creating session
     db = SessionLocal()
     try:
         yield db
