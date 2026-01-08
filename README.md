@@ -1,19 +1,19 @@
-# SupplyChain Sentinel - Disruption Response System
+# LogiTech - SupplyChain Sentinel
 
-**SupplyChain Sentinel** is an AI-powered logistics platform that detects supply chain disruptions (port strikes, weather, closures) and automatically generates actionable response tickets. It uses a deterministic decision engine enhanced by GenAI for natural language interaction.
+**SupplyChain Sentinel** is an AI-powered logistics platform that detects supply chain disruptions (port strikes, weather, closures) and automatically generates actionable response tickets.
 
 ## 🏗️ Architecture
 
 ```mermaid
 graph TD
-    User[Logistics Operator] -->|HTTP/Websocket| Frontend[Frontend (HTML/JS)]
-    Frontend -->|API REST| Backend[FastAPI Backend]
+    User["Logistics Operator"] -->|HTTP/Websocket| Frontend["Frontend (HTML/JS)"]
+    Frontend -->|API REST| Backend["FastAPI Backend"]
     
     subgraph Backend Services
-        Auth[Auth Service (bcrypt)]
-        Impact[Impact Service (Geo-Matching)]
-        Decision[Decision Engine (Deterministic)]
-        AI[AI Service (Google Gemini)]
+        Auth["Auth Service (bcrypt)"]
+        Impact["Impact Service (Geo-Matching)"]
+        Decision["Decision Engine (Deterministic)"]
+        AI["AI Service (Google Gemini)"]
     end
     
     Backend --> Auth
@@ -22,7 +22,7 @@ graph TD
     Backend --> AI
     
     subgraph Data Layer
-        DB[(SQLite Database)]
+        DB[("SQLite Database")]
     end
     
     Auth --> DB
