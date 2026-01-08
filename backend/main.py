@@ -29,12 +29,13 @@ app.add_middleware(
 
 
 
-@app.on_event("startup")
-async def startup_event():
-    """Initialize database on application startup"""
-    print("Initializing database...")
-    init_db()
-    print("Database initialized successfully!")
+# Disabled for Vercel serverless - database initializes on first request
+# @app.on_event("startup")
+# async def startup_event():
+#     """Initialize database on application startup"""
+#     print("Initializing database...")
+#     init_db()
+#     print("Database initialized successfully!")
 
 
 # ============================================================================

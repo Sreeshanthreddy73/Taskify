@@ -9,7 +9,8 @@ from typing import Generator
 import os
 
 # Database configuration
-DATABASE_DIR = os.path.join(os.path.dirname(__file__), "data")
+# Use /tmp for Vercel serverless (only writable directory)
+DATABASE_DIR = os.environ.get("DATABASE_DIR", "/tmp")
 DATABASE_URL = f"sqlite:///{os.path.join(DATABASE_DIR, 'logitech.db')}"
 
 # Ensure data directory exists
