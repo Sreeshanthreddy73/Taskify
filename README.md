@@ -61,6 +61,40 @@ Go to your browser and visit:
 
 That's it! Log in using the credentials below.
 
+
+---
+
+## 📖 About the Project
+
+### ❓ Problem Statement
+Global supply chains are increasingly fragile. Disruptions like the **Red Sea Crisis**, **Port Strikes**, or **Severe Weather** can delay shipments by weeks and cost millions in demurrage and expedited shipping.
+Currently, logistics operators manually monitor news, cross-reference it with thousands of shipments, and manually email carriers. This process is **slow, error-prone, and reactive**.
+
+### 💡 Motivation
+The motivation behind **SupplyChain Sentinel** was to transform logistics from *reactive* to *proactive*. We wanted to build a "Digital Watchtower" that doesn't just show you where ships are, but **tells you what to do** when things go wrong.
+
+### 🛠️ Our Solution
+We built an **AI-Assisted Disruption Response System** that:
+1.  **Ingests Disruption Data:** Simulates real-time feeds of global events.
+2.  **Analyzes Impact:** Uses geospatial logic to instantly identify which shipments are in the affected zone.
+3.  **Generates Solutions:** A deterministic engine calculates the best rerouting options (cost vs. time).
+4.  **Assists Operators:** Uses **Google Gemini AI** to explain the situation in natural language and draft response tickets.
+
+### 📉 Impact
+-   **Response Time:** Reduced from hours to **seconds**.
+-   **Accuracy:** Eliminates human error in identifying affected container IDs.
+-   **Cost Savings:** Early intervention allows rerouting before expensive bottlenecks form.
+
+---
+
+## 🚀 Future Expansion
+-   **Live Data Integration:** Connect to MarineTraffic/VesselFinder APIs for real-time ship positioning.
+-   **Predictive Analytics:** Use ML to predict disruptions (e.g., hurricane paths) *before* they happen.
+-   **Blockchain Ledger:** Record all action tickets on a blockchain for immutable audit trails.
+-   **Automated Execution:** API integrations with carriers (Maersk, MSC) to book new slots automatically.
+
+---
+
 ## 👥 Demo Accounts
 
 | Operator ID | Password | Role | Name |
